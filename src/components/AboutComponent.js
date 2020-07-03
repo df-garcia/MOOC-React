@@ -16,7 +16,7 @@ function RenderLeader({ leader }) {
   return (
     <Media>
       <Media left top href="#">
-        <Media object src={leader.image} style={imgStyle} alt={leader.name} class="mr-3"/>
+        <Media object src={leader.image} style={imgStyle} alt={leader.name} className="mr-3"/>
       </Media>
 
       <Media body>

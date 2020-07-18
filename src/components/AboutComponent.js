@@ -1,4 +1,8 @@
 import React from "react";
+import { baseUrl } from '../shared/baseUrl';
+import { Loading } from './LoadingComponent';
+import { FadeTransform } from 'react-animation-components';
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,31 +13,50 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 
-function RenderLeader({ leader }) {
+function RenderLeader({ leader, isLoading, errMess }) {
     let imgStyle={
         margin: '15px'
     }
-  return (
-    <Media>
-      <Media left top href="#">
-        <Media object src={leader.image} style={imgStyle} alt={leader.name} className="mr-3"/>
-      </Media>
+    
+    if(isLoading){
+      return(
+          <Loading></Loading>
+      );
+  }
+  else if(errMess){
+      return (
+          <h4>{errMess}</h4>
+      );
+  }
+  else
+    return (
+      <Media>
+        <Media left top href="#">
+          <Media object src={baseUrl + leader.image} style={imgStyle} alt={leader.name} className="mr-3"/>
+        </Media>
 
-      <Media body>
-        <Media heading>{leader.name}</Media>
-        <p>{leader.designation}</p>
-        {leader.description}
+        <Media body>
+          <Media heading>{leader.name}</Media>
+          <p>{leader.designation}</p>
+          {leader.description}
+        </Media>
       </Media>
-    </Media>
-  );
+    );
 }
 
 function About(props) {
-  const leaders = props.leaders.map((leader) => {
+  const leaders = props.leaders.leaders.map((leader) => {
     return (
       <div>
-        <RenderLeader key={leader.id} leader={leader}></RenderLeader>
+        <FadeTransform in 
+             transformProps={{
+                 exitTransform: 'scale(0.5) translateY(-50%)'
+             }}>
+        <RenderLeader key={leader.id} leader={leader} 
+                    isLoading={props.isLoading}
+                    errMess={props.errMess}></RenderLeader>
         <br></br>
+        </FadeTransform>
       </div>
     );
   });
